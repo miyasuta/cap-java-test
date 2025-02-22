@@ -1,0 +1,161 @@
+@server = http://localhost:8080
+@auth = Authorization: Basic admin:admin
+
+
+### Books
+# @name Books_GET
+GET {{server}}/odata/v4/AdminService/Books
+{{auth}}
+
+
+### Books Drafts GET
+# @name Books_Drafts_GET
+GET {{server}}/odata/v4/AdminService/Books?$filter=(IsActiveEntity eq false)
+{{auth}}
+
+
+### Books Draft POST
+# @name Books_Draft_POST
+POST {{server}}/odata/v4/AdminService/Books
+Content-Type: application/json
+{{auth}}
+
+{
+  "title": "title-1621268",
+  "descr": "descr-1621268",
+  "author": {
+    "ID": "2753691d-7c5f-4c16-9ce5-b8853e1d7402"
+  },
+  "genre": {
+    "ID": 18357982
+  },
+  "stock": 10,
+  "price": 13.11,
+  "currency": {
+    "code": "423"
+  },
+  "createdAt": "2020-11-30T00:00:00.000Z",
+  "createdBy": "createdBy.yqz8@example.org",
+  "modifiedAt": "2006-04-14T00:00:00.000Z",
+  "modifiedBy": "modifiedBy.yqz8@example.com"
+}
+
+
+### Result from POST request above
+@draftID = {{Books_Draft_POST.response.body.$.ID}}
+
+
+### Books Draft PATCH
+# @name Books_Draft_Patch
+PATCH {{server}}/odata/v4/AdminService/Books(ID={{draftID}},IsActiveEntity=false)
+Content-Type: application/json
+{{auth}}
+
+{
+  "title": "title-1621268",
+  "descr": "descr-1621268",
+  "author": {
+    "ID": "2753691d-7c5f-4c16-9ce5-b8853e1d7402"
+  },
+  "genre": {
+    "ID": 18357982
+  },
+  "stock": 10,
+  "price": 13.11,
+  "currency": {
+    "code": "423"
+  },
+  "createdAt": "2020-11-30T00:00:00.000Z",
+  "createdBy": "createdBy.yqz8@example.org",
+  "modifiedAt": "2006-04-14T00:00:00.000Z",
+  "modifiedBy": "modifiedBy.yqz8@example.com"
+}
+
+
+### Books Draft Prepare
+# @name Books_Draft_Prepare
+POST {{server}}/odata/v4/AdminService/Books(ID={{draftID}},IsActiveEntity=false)/AdminService.draftPrepare
+Content-Type: application/json
+{{auth}}
+
+{}
+
+
+### Books Draft Activate
+# @name Books_Draft_Activate
+POST {{server}}/odata/v4/AdminService/Books(ID={{draftID}},IsActiveEntity=false)/AdminService.draftActivate
+Content-Type: application/json
+{{auth}}
+
+{}
+
+
+### Authors
+# @name Authors_GET
+GET {{server}}/odata/v4/AdminService/Authors
+{{auth}}
+
+
+### Authors
+# @name Authors_POST
+POST {{server}}/odata/v4/AdminService/Authors
+Content-Type: application/json
+{{auth}}
+
+{
+  "ID": "2753691d-7c5f-4c16-9ce5-b8853e1d7402",
+  "name": "name-2753691",
+  "dateOfBirth": "2017-04-26",
+  "dateOfDeath": "2017-04-28",
+  "placeOfBirth": "placeOfBirth-2753691",
+  "placeOfDeath": "placeOfDeath-2753691",
+  "createdAt": "2017-03-26T00:00:00.000Z",
+  "createdBy": "createdBy.1n0rf@example.org",
+  "modifiedAt": "2009-02-14T00:00:00.000Z",
+  "modifiedBy": "modifiedBy.1n0rf@example.net"
+}
+
+
+### Authors
+# @name Authors_PATCH
+PATCH {{server}}/odata/v4/AdminService/Authors/2753691d-7c5f-4c16-9ce5-b8853e1d7402
+Content-Type: application/json
+{{auth}}
+
+{
+  "ID": "2753691d-7c5f-4c16-9ce5-b8853e1d7402",
+  "name": "name-2753691",
+  "dateOfBirth": "2017-04-26",
+  "dateOfDeath": "2017-04-28",
+  "placeOfBirth": "placeOfBirth-2753691",
+  "placeOfDeath": "placeOfDeath-2753691",
+  "createdAt": "2017-03-26T00:00:00.000Z",
+  "createdBy": "createdBy.1n0rf@example.org",
+  "modifiedAt": "2009-02-14T00:00:00.000Z",
+  "modifiedBy": "modifiedBy.1n0rf@example.net"
+}
+
+
+### Authors
+# @name Authors_DELETE
+DELETE {{server}}/odata/v4/AdminService/Authors/2753691d-7c5f-4c16-9ce5-b8853e1d7402
+Content-Type: application/json
+{{auth}}
+
+
+### Languages
+# @name Languages_GET
+GET {{server}}/odata/v4/AdminService/Languages
+{{auth}}
+
+
+### Genres
+# @name Genres_GET
+GET {{server}}/odata/v4/AdminService/Genres
+{{auth}}
+
+
+### Currencies
+# @name Currencies_GET
+GET {{server}}/odata/v4/AdminService/Currencies
+{{auth}}

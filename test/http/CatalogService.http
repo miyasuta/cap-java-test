@@ -1,8 +1,38 @@
 @server = http://localhost:8080
-@auth = Authorization: Basic authenticated:
+@auth = Authorization: Basic admin:admin
+
+
+### ListOfBooks
+# @name ListOfBooks_GET
+GET {{server}}/odata/v4/CatalogService/ListOfBooks
+{{auth}}
 
 
 ### Books
 # @name Books_GET
 GET {{server}}/odata/v4/CatalogService/Books
 {{auth}}
+
+
+### Genres
+# @name Genres_GET
+GET {{server}}/odata/v4/CatalogService/Genres
+{{auth}}
+
+
+### Currencies
+# @name Currencies_GET
+GET {{server}}/odata/v4/CatalogService/Currencies
+{{auth}}
+
+
+### submitOrder
+# @name submitOrder_POST
+POST {{server}}/odata/v4/CatalogService/submitOrder
+Content-Type: application/json
+{{auth}}
+
+{
+  "book": "7756b725-cefc-43a2-a3c8-0c9104a349b8",
+  "quantity": 1
+}
