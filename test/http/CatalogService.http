@@ -1,0 +1,8 @@
+@server = http://localhost:8080
+@auth = Authorization: Basic authenticated:
+
+
+### Books
+# @name Books_GET
+GET {{server}}/odata/v4/CatalogService/Books
+{{auth}}
