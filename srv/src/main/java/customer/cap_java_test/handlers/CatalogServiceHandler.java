@@ -36,7 +36,7 @@ public class CatalogServiceHandler implements EventHandler {
 	@On
 	public void submitOrder(SubmitOrderContext context) {
 		// check stock
-		Books currentBook = db.run(Select.from(Books_.class).where(b -> b.ID().eq(context.getBook())).columns(Books.STOCK)).single(Books.class);
+		Books currentBook = db.run(Select.from(Books_.class).where(b -> b.ID().eq(context.getBook())).columns(Books_::stock)).single(Books.class);
 		if (context.getQuantity() > currentBook.getStock()) {
 			throw new ServiceException(ErrorStatuses.CONFLICT, context.getQuantity() + " exceeds stock for book");
 		}
