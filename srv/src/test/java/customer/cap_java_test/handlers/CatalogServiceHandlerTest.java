@@ -39,4 +39,11 @@ class CatalogServiceHandlerTest {
 		assertEquals("title", book.getTitle());
 	}
 
+	@Test
+	void testnoTitle() {
+		book.setTitle(null);
+		handler.discountBooks(Stream.of(book));
+		assertEquals(null, book.getTitle());
+	}
+
 }

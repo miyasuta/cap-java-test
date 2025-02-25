@@ -5,8 +5,12 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sap.cds.Result;
 import com.sap.cds.ql.Select;
 import com.sap.cds.ql.Update;
+import com.sap.cds.services.ErrorStatus;
+import com.sap.cds.services.ErrorStatuses;
+import com.sap.cds.services.ServiceException;
 import com.sap.cds.services.cds.CqnService;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.After;
@@ -31,6 +35,12 @@ public class CatalogServiceHandler implements EventHandler {
 
 	@On
 	public void submitOrder(SubmitOrderContext context) {
+		// check stock
+		Books currentBook = db.run(Select.from(Books_.class).where(b -> b.ID().eq(context.getBook())).columns(Books.STOCK)).single(Books.class);
+		if (context.getQuantity() > currentBook.getStock()) {
+			throw new ServiceException(ErrorStatuses.CONFLICT, context.getQuantity() + " exceeds stock for book");
+		}
+
 		// decrease and update stock in database
 		db.run(Update.entity(Books_.class).byId(context.getBook()).set(b -> b.stock(), s -> s.minus(context.getQuantity())));
 

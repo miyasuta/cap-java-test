@@ -40,6 +40,16 @@ Content-Type: application/json
   "modifiedBy": "modifiedBy.yqz8@example.com"
 }
 
+###
+# @name Books_Draft_POST
+POST {{server}}/odata/v4/AdminService/Books
+Content-Type: application/json
+{{auth}}
+
+{
+  
+}
+
 
 ### Result from POST request above
 @draftID = {{Books_Draft_POST.response.body.$.ID}}

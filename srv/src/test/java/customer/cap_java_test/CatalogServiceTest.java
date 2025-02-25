@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sap.cds.ql.Delete;
 import com.sap.cds.ql.Insert;
+import com.sap.cds.services.ServiceException;
 import com.sap.cds.services.persistence.PersistenceService;
 
 import cds.gen.catalogservice.Books;
@@ -14,6 +15,7 @@ import cds.gen.catalogservice.CatalogService;
 import cds.gen.catalogservice.SubmitOrderContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -46,5 +48,21 @@ public class CatalogServiceTest {
         catalogService.emit(context);
 
         assertEquals(90, context.getResult().getStock());
+    }
+
+    @Test
+    public void submitOrderExceedingStock() {
+        //fill test data
+        Books book = Books.create();
+        book.setId("1");
+        book.setStock(100);
+        db.run(Insert.into(BOOKS).entry(book));
+
+        SubmitOrderContext context = SubmitOrderContext.create();
+        context.setBook("1");
+        context.setQuantity(101);
+        //catalogService.emit(context);
+
+        assertThrows(ServiceException.class, () -> catalogService.emit(context), context.getQuantity() + " exceeds stock for book");
     }
 }
